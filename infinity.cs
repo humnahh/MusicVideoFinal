@@ -45,7 +45,7 @@ public class InfinityShape : MonoBehaviour
         elapsedTime += Time.deltaTime;
         time += Time.deltaTime * AudioSpectrum.audioAmp; 
 
-        if (elapsedTime <= 39) {
+        if (elapsedTime <= 38) {
             if (spawned == true) {
                 for (int i = 0; i < numSphere; i++)
                 {
@@ -60,16 +60,20 @@ public class InfinityShape : MonoBehaviour
                     // Adjust sphere size based on audio
                     float scale = 0.1f + AudioSpectrum.audioAmp;
                     spheres[i].transform.localScale = new Vector3(scale, scale, scale);
+
+                    Renderer sphereRenderer = spheres[i].GetComponent<Renderer>();
+                    float hue = (float)i / numSphere; // Hue cycles through 0 to 1
+                    Color color = Color.HSVToRGB(Mathf.Abs(hue * Mathf.Sin(time)), Mathf.Cos(time), 2f + Mathf.Cos(time)); // Full saturation and brightness
+                    sphereRenderer.material.color = color;
                 }
             }
-        } else if (elapsedTime > 39 && elapsedTime <= 40) {
+        } else if (elapsedTime <= 39) {
             for (int i =0; i < numSphere; i++) {
                 Renderer sphereRenderer = spheres[i].GetComponent<Renderer>();
+                spheres[i].transform.localScale = new Vector3(20f, 20f, 20f);
 
-                float hue = 0f; // Keep hue at red
-                float brightness = Mathf.Abs(Mathf.Cos(time)) * 0.5f + 0.5f; // Cycles between 0.5 and 1
-
-                Color color = Color.HSVToRGB(hue, 20f, 20f);
+                float hue = (float)i / numSphere; // Hue cycles through 0 to 1
+                Color color = Color.HSVToRGB(Mathf.Abs(hue * Mathf.Sin(time)), Mathf.Cos(time), 2f + Mathf.Cos(time)); // 
                 sphereRenderer.material.color = color;
             }
         } else {
